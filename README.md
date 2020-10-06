@@ -1,13 +1,12 @@
 ## Null Safety only works if package name is `test`
 
-I've come across a strange issue where a Dart command line app only compiles code using Null Safety if the package name is `test` inside `pubspec.yaml`.
+I've come across a strange issue where a Dart command line app only compiles (with Null Safety enabled) if the package name is `test` inside `pubspec.yaml`.
 
 Here's a minimal project with reproducible steps (on my machine):
 
 **pubspec.yaml**:
 
 ```yaml
-# pubspec.yaml
 name: test
 description: A simple command-line application.
 # version: 1.0.0
@@ -46,7 +45,9 @@ analyzer:
 ```dart
 void foo({required int bar}) {}
 
-void main() {}
+void main() {
+  print('hello world');
+}
 ```
 
 If I run `dart main.dart`, the output is:
@@ -73,6 +74,8 @@ My `dart --version` is:
 ```
 Dart SDK version: 2.10.0 (stable) (Mon Sep 28 09:21:23 2020 +0200) on "macos_x64"
 ```
+
+Reproduced both on macOS Mojave and Catalina, as well as Dart 2.10.0 and 2.10.1.
 
 I though this may have been an issue with my pub cache, so I tried `pub cache repair`, but to no avail.
 
